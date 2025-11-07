@@ -14,7 +14,7 @@ class InscripcionController extends Controller
         $alumnos = Alumno::all();
         $actividades = Actividad::all();
         $inscripciones = Inscripcion::with(['alumno', 'actividad'])->latest()->get();
-        
+
         return view('inscripciones.create', compact('alumnos', 'actividades', 'inscripciones'));
     }
 
@@ -41,11 +41,28 @@ class InscripcionController extends Controller
             ->with('success', 'Inscripción creada correctamente.');
     }
 
-    public function destroy(Inscripcion $inscripcion)
+    public function destroy($id)
     {
-        $inscripcion->delete();
+        try {
+            // Buscar la inscripción
+            $inscripcion = Inscripcion::findOrFail($id);
 
-        return redirect()->back()
-            ->with('success', 'Inscripción eliminada correctamente.');
+            // Guardar info para mensaje
+            $alumnoNombre = $inscripcion->alumno->nombre_completo;
+            $actividadNombre = $inscripcion->actividad->nombre;
+
+            // Eliminar
+            $inscripcion->delete();
+
+            return redirect()->back()
+                ->with('success', "✅ {$alumnoNombre} desinscrito de {$actividadNombre} correctamente.");
+
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return redirect()->back()
+                ->with('error', '❌ No se encontró la inscripción.');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', '❌ Error: ' . $e->getMessage());
+        }
     }
 }
