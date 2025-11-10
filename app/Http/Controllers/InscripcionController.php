@@ -9,6 +9,25 @@ use Illuminate\Http\Request;
 
 class InscripcionController extends Controller
 {
+    public function index(Request $request)
+    {
+        $query = Inscripcion::with(['alumno', 'actividad']);
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->whereHas('alumno', function($q) use ($search) {
+                $q->where('nombre', 'LIKE', "%{$search}%")
+                  ->orWhere('apellido', 'LIKE', "%{$search}%");
+            })->orWhereHas('actividad', function($q) use ($search) {
+                $q->where('nombre', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $inscripciones = $query->latest()->get();
+
+        return view('inscripciones.index', compact('inscripciones'));
+    }
+
     public function create()
     {
         $alumnos = Alumno::all();
@@ -35,33 +54,45 @@ class InscripcionController extends Controller
                 ->with('error', 'El alumno ya está inscrito en esta actividad.');
         }
 
-        Inscripcion::create($request->all());
+        // Crear la inscripción con estado por defecto
+        Inscripcion::create([
+            'alumno_id' => $request->alumno_id,
+            'actividad_id' => $request->actividad_id,
+            'fecha_inscripcion' => now(), // Fecha actual
+            'estado' => 'Aceptada' // Estado por defecto
+        ]);
 
-        return redirect()->route('inscripciones.create')
+        return redirect()->route('inscripciones.index')
             ->with('success', 'Inscripción creada correctamente.');
+    }
+
+    public function show($id)
+    {
+        $inscripcion = Inscripcion::with(['alumno', 'actividad'])->findOrFail($id);
+        return view('inscripciones.show', compact('inscripcion'));
     }
 
     public function destroy($id)
     {
         try {
             // Buscar la inscripción
-            $inscripcion = Inscripcion::findOrFail($id);
+            $inscripcion = Inscripcion::with(['alumno', 'actividad'])->findOrFail($id);
 
             // Guardar info para mensaje
-            $alumnoNombre = $inscripcion->alumno->nombre_completo;
+            $alumnoNombre = $inscripcion->alumno->nombre . ' ' . $inscripcion->alumno->apellido;
             $actividadNombre = $inscripcion->actividad->nombre;
 
             // Eliminar
             $inscripcion->delete();
 
-            return redirect()->back()
+            return redirect()->route('inscripciones.index')
                 ->with('success', "✅ {$alumnoNombre} desinscrito de {$actividadNombre} correctamente.");
 
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return redirect()->back()
+            return redirect()->route('inscripciones.index')
                 ->with('error', '❌ No se encontró la inscripción.');
         } catch (\Exception $e) {
-            return redirect()->back()
+            return redirect()->route('inscripciones.index')
                 ->with('error', '❌ Error: ' . $e->getMessage());
         }
     }
