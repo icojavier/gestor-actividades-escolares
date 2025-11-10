@@ -19,8 +19,8 @@ Route::get('actividades/{id}/alumnos', [ActividadController::class, 'showAlumnos
 // Rutas para Alumnos (Resource)
 Route::resource('alumnos', AlumnoController::class);
 
-// Rutas para Inscripciones
-Route::resource('inscripciones', InscripcionController::class)->only(['create', 'store', 'destroy']);
+// Rutas para Inscripciones - AGREGAR index y show
+Route::resource('inscripciones', InscripcionController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
 
 // Rutas para Exportación PDF
 Route::get('/export/actividades', [PdfExportController::class, 'exportAllActividades'])->name('export.actividades.all');
