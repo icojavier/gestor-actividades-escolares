@@ -20,10 +20,15 @@ class Alumno extends Model
         'edad'
     ];
 
-    public function actividades(): BelongsToMany
+    public function actividades()
     {
-        return $this->belongsToMany(Actividad::class, 'inscripciones')
-                    ->withTimestamps();
+        return $this->belongsToMany(Actividad::class, 'inscripciones');
+    }
+
+    // Para withCount
+    public function actividades_count()
+    {
+        return $this->belongsToMany(Actividad::class, 'inscripciones')->count();
     }
 
     // AGREGAR ESTA RELACIÓN FALTANTE

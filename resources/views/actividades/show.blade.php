@@ -12,9 +12,9 @@
         <form action="{{ route('actividades.destroy', $actividad->id) }}" method="POST" class="d-inline">
             @csrf
             @method('DELETE')
-            <button type="submit" class="btn btn-danger" 
+            <button type="submit" class="btn btn-danger"
                 onclick="return confirm('¿Estás seguro de eliminar la actividad \"{{ $actividad->nombre }}\"?')">
-                🗑️ Eliminar
+                <i class="bi bi-trash"></i> Eliminar
             </button>
         </form>
     </div>
@@ -32,7 +32,7 @@
                     <div class="col-md-6">
                         <h6 class="text-muted">Descripción</h6>
                         <p class="lead">{{ $actividad->descripcion }}</p>
-                        
+
                         <h6 class="text-muted mt-3">Día de la Semana</h6>
                         <p>
                             <span class="badge bg-info fs-6">{{ $actividad->dia_semana }}</span>
@@ -45,7 +45,7 @@
                                 {{ $actividad->hora_inicio->format('H:i') }} - {{ $actividad->hora_finalizacion->format('H:i') }}
                             </span>
                         </p>
-                        
+
                         <h6 class="text-muted mt-3">Duración</h6>
                         <p>
                             @php
@@ -100,11 +100,11 @@
                         </tbody>
                     </table>
                 </div>
-                
+
                 @if($actividad->alumnos_count > 5)
                 <div class="text-center mt-2">
                     <small class="text-muted">
-                        Mostrando 5 de {{ $actividad->alumnos_count }} alumnos. 
+                        Mostrando 5 de {{ $actividad->alumnos_count }} alumnos.
                         <a href="{{ route('actividades.alumnos', $actividad->id) }}">Ver todos</a>
                     </small>
                 </div>
@@ -142,7 +142,7 @@
                     <a href="{{ route('inscripciones.create') }}" class="btn btn-success">
                         ➕ Inscribir Alumnos
                     </a>
-                    
+
                     @if($actividad->alumnos_count > 0)
                     <a href="{{ route('actividades.alumnos', $actividad->id) }}" class="btn btn-primary">
                         👥 Ver Todos los Alumnos
@@ -151,7 +151,7 @@
                         📄 Exportar Lista PDF
                     </a>
                     @endif
-                    
+
                     <a href="{{ route('actividades.index') }}" class="btn btn-secondary">
                         📋 Volver al Listado
                     </a>
@@ -169,7 +169,7 @@
                     <strong>Total de Alumnos:</strong>
                     <span class="badge bg-primary float-end fs-6">{{ $actividad->alumnos_count }}</span>
                 </div>
-                
+
                 @if($actividad->alumnos_count > 0)
                     @php
                         $cursosCount = $actividad->alumnos->groupBy('curso_academico')->map->count();
@@ -177,17 +177,17 @@
                         $edadMinima = $actividad->alumnos->min('edad');
                         $edadMaxima = $actividad->alumnos->max('edad');
                     @endphp
-                    
+
                     <div class="mb-3">
                         <strong>Edad Promedio:</strong>
                         <span class="badge bg-success float-end fs-6">{{ number_format($edadPromedio, 1) }} años</span>
                     </div>
-                    
+
                     <div class="mb-3">
                         <strong>Rango de Edades:</strong>
                         <span class="badge bg-info float-end fs-6">{{ $edadMinima }} - {{ $edadMaxima }} años</span>
                     </div>
-                    
+
                     <hr>
                     <strong>Distribución por Cursos:</strong>
                     @foreach($cursosCount->take(3) as $curso => $count)
@@ -196,7 +196,7 @@
                         <span class="badge bg-secondary float-end">{{ $count }}</span>
                     </div>
                     @endforeach
-                    
+
                     @if($cursosCount->count() > 3)
                     <div class="text-center">
                         <small class="text-muted">
@@ -258,22 +258,99 @@
 
 @push('styles')
 <style>
-    .card-header {
-        font-weight: bold;
-    }
-    .badge {
-        font-size: 0.8em;
-    }
-    .lead {
-        font-size: 1.1rem;
-        line-height: 1.6;
-    }
     .btn {
-        border-radius: 0.375rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    .table-sm th {
-        background-color: #f8f9fa;
-        color: #495057;
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    .btn:active {
+        transform: translateY(0);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .btn-group .btn {
+        min-width: 80px;
+        margin: 0 3px;
+        border-radius: 6px;
+    }
+
+    /* Botón VER - Azul profesional */
+    .btn-info {
+        background: linear-gradient(145deg, #17a2b8, #138496);
+        color: white;
+    }
+
+    .btn-info:hover {
+        background: linear-gradient(145deg, #138496, #117a8b);
+    }
+
+    /* Botón EDITAR - Amarillo/naranja */
+    .btn-warning {
+        background: linear-gradient(145deg, #ffc107, #e0a800);
+        color: #212529;
+    }
+
+    .btn-warning:hover {
+        background: linear-gradient(145deg, #e0a800, #d39e00);
+    }
+
+    /* Botón IMPRIMIR - Rojo */
+    .btn-danger {
+        background: linear-gradient(145deg, #dc3545, #c82333);
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background: linear-gradient(145deg, #c82333, #bd2130);
+    }
+
+    /* Botón ELIMINAR - Gris oscuro */
+    .btn-dark {
+        background: linear-gradient(145deg, #343a40, #23272b);
+        color: white;
+    }
+
+    .btn-dark:hover {
+        background: linear-gradient(145deg, #23272b, #1a1e21);
+    }
+
+    /* Botón deshabilitado */
+    .btn:disabled {
+        opacity: 0.6;
+        transform: none !important;
+        box-shadow: none !important;
+    }
+
+    /* Efecto de carga en botones */
+    .btn-loading {
+        position: relative;
+        color: transparent;
+    }
+
+    .btn-loading::after {
+        content: '';
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        top: 50%;
+        left: 50%;
+        margin-left: -8px;
+        margin-top: -8px;
+        border: 2px solid #ffffff;
+        border-radius: 50%;
+        border-right-color: transparent;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
     }
 </style>
 @endpush

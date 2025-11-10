@@ -26,9 +26,14 @@ class Actividad extends Model
         'hora_finalizacion' => 'datetime:H:i',
     ];
 
-    public function alumnos(): BelongsToMany
+    public function alumnos()
+{
+    return $this->belongsToMany(Alumno::class, 'inscripciones');
+}
+
+    // Para withCount
+    public function alumnos_count()
     {
-        return $this->belongsToMany(Alumno::class, 'inscripciones')
-                    ->withTimestamps();
+        return $this->belongsToMany(Alumno::class, 'inscripciones')->count();
     }
 }

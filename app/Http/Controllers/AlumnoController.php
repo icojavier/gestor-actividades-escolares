@@ -11,24 +11,24 @@ class AlumnoController extends Controller
 {
     public function index(Request $request)
     {
-        // Cargar alumnos con sus actividades
-        $alumnos = Alumno::withCount('actividades')
-                    ->with(['actividades' => function($query) {
-                        $query->select('actividades.id', 'actividades.nombre', 'actividades.dia_semana');
-                    }])
-                    ->get();
-        
-        return view('alumnos.index', compact('alumnos'));
+    // Cargar alumnos con sus actividades - USANDO PAGINACIÓN
+    $alumnos = Alumno::withCount('actividades')
+                ->with(['actividades' => function($query) {
+                    $query->select('actividades.id', 'actividades.nombre', 'actividades.dia_semana');
+                }])
+                ->paginate(10); // 10 elementos por página
+
+    return view('alumnos.index', compact('alumnos'));
     }
 
     public function create()
     {
         $cursos = [
-            '1º Primaria', '2º Primaria', '3º Primaria', '4º Primaria', 
-            '5º Primaria', '6º Primaria', '1º ESO', '2º ESO', 
+            '1º Primaria', '2º Primaria', '3º Primaria', '4º Primaria',
+            '5º Primaria', '6º Primaria', '1º ESO', '2º ESO',
             '3º ESO', '4º ESO', '1º Bachillerato', '2º Bachillerato'
         ];
-        
+
         return view('alumnos.create', compact('cursos'));
     }
 
@@ -50,11 +50,11 @@ class AlumnoController extends Controller
     {
         $alumno = Alumno::findOrFail($id);
         $cursos = [
-            '1º Primaria', '2º Primaria', '3º Primaria', '4º Primaria', 
-            '5º Primaria', '6º Primaria', '1º ESO', '2º ESO', 
+            '1º Primaria', '2º Primaria', '3º Primaria', '4º Primaria',
+            '5º Primaria', '6º Primaria', '1º ESO', '2º ESO',
             '3º ESO', '4º ESO', '1º Bachillerato', '2º Bachillerato'
         ];
-        
+
         return view('alumnos.edit', compact('alumno', 'cursos'));
     }
 
