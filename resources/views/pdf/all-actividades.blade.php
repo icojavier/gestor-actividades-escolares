@@ -43,7 +43,13 @@
                 <td>{{ $actividad->nombre }}</td>
                 <td>{{ Str::limit($actividad->descripcion, 50) }}</td>
                 <td>{{ $actividad->dia_semana }}</td>
-                <td>{{ $actividad->hora_inicio->format('H:i') }} - {{ $actividad->hora_finalizacion->format('H:i') }}</td>
+                <td>
+                    @if($actividad->hora_inicio && $actividad->hora_fin)
+                        {{ \Carbon\Carbon::parse($actividad->hora_inicio)->format('H:i') }} - {{ \Carbon\Carbon::parse($actividad->hora_fin)->format('H:i') }}
+                    @else
+                        Horario no definido
+                    @endif
+                </td>
                 <td class="count">{{ $actividad->alumnos_count }}</td>
             </tr>
             @endforeach

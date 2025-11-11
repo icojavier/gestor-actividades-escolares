@@ -5,10 +5,10 @@
     <h1 class="h2">Gestión de Actividades</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
         <a href="{{ route('export.actividades.all') }}" class="btn btn-danger me-2">
-            📄 Exportar PDF
+            <i class="bi bi-file-pdf"></i> Exportar PDF
         </a>
         <a href="{{ route('actividades.create') }}" class="btn btn-primary">
-            ➕ Nueva Actividad
+            <i class="bi bi-plus-circle"></i> Nueva Actividad
         </a>
     </div>
 </div>
@@ -39,49 +39,47 @@
         <table class="table table-striped table-hover">
             <thead class="table-dark">
                 <tr>
-                    <th>Nombre</th>
-                    <th>Descripción</th>
-                    <th>Día</th>
-                    <th>Horario</th>
-                    <!-- Columna "Alumnos Inscritos" eliminada -->
-                    <th>Acciones</th>
+                    <th class="text-center">Nombre</th>
+                    <th class="text-center">Descripción</th>
+                    <th class="text-center">Día</th>
+                    <th class="text-center">Horario</th>
+                    <th class="text-center">Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($actividades as $actividad)
                 <tr>
-                    <td>
-                        <strong>{{ $actividad->nombre }}</strong>
-                    </td>
-                    <td>{{ Str::limit($actividad->descripcion, 50) }}</td>
-                    <td>
+                    <td class="text-center">{{ $actividad->nombre }}</td>
+                    <td>{{ $actividad->descripcion }}</td>
+                    <td class="text-center">
                         <span class="badge bg-info">{{ $actividad->dia_semana }}</span>
                     </td>
-                    <td>
-                        <span class="text-muted">
-                            @if($actividad->hora_inicio && $actividad->hora_finalizacion)
-                                {{ \Carbon\Carbon::parse($actividad->hora_inicio)->format('H:i') }} -
-                                {{ \Carbon\Carbon::parse($actividad->hora_finalizacion)->format('H:i') }}
-                            @else
-                                Horario no definido
-                            @endif
-                        </span>
+                    <td class="text-center">
+                        @if($actividad->hora_inicio && $actividad->hora_fin)
+                            {{ \Carbon\Carbon::parse($actividad->hora_inicio)->format('H:i') }} - {{ \Carbon\Carbon::parse($actividad->hora_fin)->format('H:i') }}
+                        @else
+                            <span class="text-muted">Horario no definido</span>
+                        @endif
                     </td>
-                    <!-- Celda de "Alumnos Inscritos" eliminada -->
-                    <td>
+                    <td class="text-center">
                         <div class="btn-group" role="group">
-                            <a href="{{ route('actividades.show', $actividad->id) }}" class="btn btn-info btn-sm text-white" title="Ver detalles">
-                                <i class="bi bi-eye me-2"></i> Ver
+                            <a href="{{ route('actividades.show', $actividad->id) }}"
+                            class="btn btn-info me-2 btn-sm text-white"
+                            title="Ver detalles">
+                                <i class="bi bi-eye"></i> Ver
                             </a>
-                            <a href="{{ route('actividades.edit', $actividad->id) }}" class="btn btn-warning btn-sm text-white" title="Editar actividad">
+                            <a href="{{ route('actividades.edit', $actividad->id) }}"
+                            class="btn btn-warning me-2 btn-sm text-white"
+                            title="Editar actividad">
                                 <i class="bi bi-pencil"></i> Editar
                             </a>
-                            <form action="{{ route('actividades.destroy', $actividad->id) }}" method="POST" class="d-inline">
+                            <form action="{{ route('actividades.destroy', $actividad->id) }}"
+                                method="POST"
+                                class="d-inline"
+                                onsubmit="return confirm('¿Estás seguro de eliminar esta actividad?')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm text-white"
-                                    onclick="return confirm('¿Estás seguro de eliminar la actividad \"{{ $actividad->nombre }}\"?')"
-                                    title="Eliminar actividad">
+                                <button type="submit" class="btn btn-danger btn-sm text-white" title="Eliminar actividad">
                                     <i class="bi bi-trash"></i> Eliminar
                                 </button>
                             </form>

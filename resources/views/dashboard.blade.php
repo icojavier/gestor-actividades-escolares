@@ -58,7 +58,8 @@
                 <p class="card-text text-muted mb-4 fs-5">
                     Gestiona las inscripciones de alumnos a actividades
                 </p>
-                <a href="{{ route('inscripciones.create') }}" class="btn btn-inscripciones btn-lg px-4 py-2">
+                <!-- Este enlace debe llevar al listado de inscripciones -->
+                <a href="{{ route('inscripciones.index') }}" class="btn btn-inscripciones btn-lg px-4 py-2">
                     <i class="bi bi-eye me-2"></i>Ver Inscripciones
                 </a>
             </div>

@@ -19,10 +19,23 @@ Route::get('actividades/{id}/alumnos', [ActividadController::class, 'showAlumnos
 // Rutas para Alumnos (Resource)
 Route::resource('alumnos', AlumnoController::class);
 
-// Rutas para Inscripciones - AGREGAR index y show
-Route::resource('inscripciones', InscripcionController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
+// 🔴 PROBLEMA ORIGINAL - Esto no está funcionando correctamente
+// Route::resource('inscripciones', InscripcionController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
 
-// Rutas para Exportación PDF
+// ✅ SOLUCIÓN 1: Usar rutas individuales explícitas (RECOMENDADO)
+Route::get('/inscripciones', [InscripcionController::class, 'index'])->name('inscripciones.index');
+Route::get('/inscripciones/create', [InscripcionController::class, 'create'])->name('inscripciones.create');
+Route::post('/inscripciones', [InscripcionController::class, 'store'])->name('inscripciones.store');
+Route::get('/inscripciones/{id}', [InscripcionController::class, 'show'])->name('inscripciones.show');
+Route::delete('/inscripciones/{id}', [InscripcionController::class, 'destroy'])->name('inscripciones.destroy');
+
+// ✅ O SOLUCIÓN 2: Usar resource con except (alternativa)
+// Route::resource('inscripciones', InscripcionController::class)->except(['edit', 'update']);
+
+// NUEVA RUTA: Exportar inscripciones a PDF
+Route::get('/export/inscripciones', [InscripcionController::class, 'exportPdf'])->name('export.inscripciones');
+
+// Rutas para Exportación PDF existentes
 Route::get('/export/actividades', [PdfExportController::class, 'exportAllActividades'])->name('export.actividades.all');
 Route::get('/export/actividad/{id}/alumnos', [PdfExportController::class, 'exportActividadAlumnos'])->name('export.actividad.alumnos');
 Route::get('/export/alumnos', [PdfExportController::class, 'exportAllAlumnos'])->name('export.alumnos.all');

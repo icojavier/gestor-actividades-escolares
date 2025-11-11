@@ -22,9 +22,15 @@ class Actividad extends Model
     ];
 
     protected $casts = [
-        'hora_inicio' => 'datetime:H:i',
-        'hora_finalizacion' => 'datetime:H:i',
+        'hora_inicio' => 'datetime',
+        'hora_fin' => 'datetime',
     ];
+
+    // Relación con inscripciones
+    public function inscripciones()
+    {
+        return $this->hasMany(Inscripcion::class);
+    }
 
     public function alumnos()
 {

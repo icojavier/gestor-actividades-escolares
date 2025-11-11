@@ -6,6 +6,7 @@ use App\Models\Inscripcion;
 use App\Models\Alumno;
 use App\Models\Actividad;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class InscripcionController extends Controller
 {
@@ -16,8 +17,7 @@ class InscripcionController extends Controller
         if ($request->has('search') && $request->search != '') {
             $search = $request->search;
             $query->whereHas('alumno', function($q) use ($search) {
-                $q->where('nombre', 'LIKE', "%{$search}%")
-                  ->orWhere('apellido', 'LIKE', "%{$search}%");
+                $q->where('nombre_completo', 'LIKE', "%{$search}%");
             })->orWhereHas('actividad', function($q) use ($search) {
                 $q->where('nombre', 'LIKE', "%{$search}%");
             });
@@ -58,10 +58,11 @@ class InscripcionController extends Controller
         Inscripcion::create([
             'alumno_id' => $request->alumno_id,
             'actividad_id' => $request->actividad_id,
-            'fecha_inscripcion' => now(), // Fecha actual
-            'estado' => 'Aceptada' // Estado por defecto
+            'fecha_inscripcion' => now(),
+            'estado' => 'Aceptada'
         ]);
 
+        // ✅ Asegúrate de que redirija al listado
         return redirect()->route('inscripciones.index')
             ->with('success', 'Inscripción creada correctamente.');
     }
@@ -95,5 +96,18 @@ class InscripcionController extends Controller
             return redirect()->route('inscripciones.index')
                 ->with('error', '❌ Error: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Exportar inscripciones a PDF
+     */
+    public function exportPdf()
+    {
+        $inscripciones = Inscripcion::with(['alumno', 'actividad'])
+            ->latest()
+            ->get();
+
+        $pdf = Pdf::loadView('pdf.inscripciones', compact('inscripciones'));
+        return $pdf->download('inscripciones-' . date('Y-m-d') . '.pdf');
     }
 }

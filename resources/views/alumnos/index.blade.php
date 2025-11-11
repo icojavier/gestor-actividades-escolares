@@ -43,67 +43,47 @@
                 <table class="table table-striped table-hover">
                     <thead class="table-dark">
                         <tr>
-                            <th>#</th>
-                            <th>Nombre Completo</th>
-                            <th>Curso Académico</th>
-                            <th>Edad</th>
-                            <th>Actividades</th>
-                            <th>Acciones</th>
+                            <th class="text-center">Nombre Completo</th>
+                            <th class="text-center">Curso Académico</th>
+                            <th class="text-center">Edad</th>
+                            <th class="text-center">Actividades</th>
+                            <th class="text-center">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($alumnos as $alumno)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>
-                                <strong>{{ $alumno->nombre_completo }}</strong>
+                            <td class="text-center">{{ $alumno->nombre_completo }}</td>
+                            <td class="text-center">{{ $alumno->curso_academico }}</td>
+                            <td class="text-center">{{ $alumno->edad }}</td>
+                            <td class="text-center">
+                                @if($alumno->actividades->count() > 0)
+                                    @foreach($alumno->actividades as $actividad)
+                                        <span class="badge bg-primary mb-1">{{ $actividad->nombre }}</span>
+                                    @endforeach
+                                @else
+                                    <span class="text-muted">Sin actividades</span>
+                                @endif
                             </td>
-                            <td>
-                                <span class="badge bg-info">{{ $alumno->curso_academico }}</span>
-                            </td>
-                            <td>
-                                <span class="badge bg-secondary">{{ $alumno->edad }} años</span>
-                            </td>
-                            <td>
-                                <span class="badge bg-success">{{ $alumno->actividades_count ?? 0 }}</span>
-                            </td>
-                            <td>
+                            <td class="text-center">
                                 <div class="btn-group" role="group">
-                                    <!-- Botón VER -->
                                     <a href="{{ route('alumnos.show', $alumno->id) }}"
-                                       class="btn btn-info btn-sm me-1 text-white"
-                                       title="Ver detalles">
-                                       <i class="bi bi-eye me-2"></i> Ver
+                                    class="btn btn-info me-2 btn-sm text-white"
+                                    title="Ver detalles">
+                                        <i class="bi bi-eye"></i> Ver
                                     </a>
-
-                                    <!-- Botón EDITAR -->
                                     <a href="{{ route('alumnos.edit', $alumno->id) }}"
-                                       class="btn btn-warning btn-sm me-1 text-white"
-                                       title="Editar alumno">
+                                    class="btn btn-warning me-2 btn-sm text-white"
+                                    title="Editar alumno">
                                         <i class="bi bi-pencil"></i> Editar
                                     </a>
-
-                                    <!-- Botón IMPRIMIR (solo si tiene actividades) -->
-                                    @if($alumno->actividades_count > 0)
-                                    <a href="{{ route('export.alumno.actividades', $alumno->id) }}"
-                                       class="btn btn-danger btn-sm me-1 text-white"
-                                       title="Imprimir actividades">
-                                        <i class="bi bi-printer"></i> Imprimir
-                                    </a>
-                                    @else
-                                    <button class="btn btn-outline-secondary btn-sm me-1 text-white" disabled title="Sin actividades para imprimir">
-                                        <i class="bi bi-printer"></i> Imprimir
-                                    </button>
-                                    @endif
-
-                                    <!-- Botón ELIMINAR -->
-                                    <form action="{{ route('alumnos.destroy', $alumno->id) }}" method="POST" class="d-inline">
+                                    <form action="{{ route('alumnos.destroy', $alumno->id) }}"
+                                        method="POST"
+                                        class="d-inline"
+                                        onsubmit="return confirm('¿Estás seguro de eliminar este alumno?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit"
-                                                class="btn btn-dark btn-sm text-white"
-                                                onclick="return confirm('¿Estás seguro de eliminar al alumno {{ $alumno->nombre_completo }}?')"
-                                                title="Eliminar alumno">
+                                        <button type="submit" class="btn btn-danger btn-sm text-white" title="Eliminar alumno">
                                             <i class="bi bi-trash"></i> Eliminar
                                         </button>
                                     </form>

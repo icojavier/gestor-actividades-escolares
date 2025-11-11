@@ -147,15 +147,15 @@
             <!-- Botones a la derecha -->
             <div class="navbar-nav ms-auto flex-row">
                 <a class="nav-link actividades me-3 {{ request()->routeIs('actividades.*') ? 'active' : '' }}"
-                   href="{{ route('actividades.index') }}">
+                href="{{ route('actividades.index') }}">
                     <i class="bi bi-calendar-event me-2"></i>Actividades
                 </a>
                 <a class="nav-link alumnos me-3 {{ request()->routeIs('alumnos.*') ? 'active' : '' }}"
-                   href="{{ route('alumnos.index') }}">
+                href="{{ route('alumnos.index') }}">
                     <i class="bi bi-people me-2"></i>Alumnos
                 </a>
                 <a class="nav-link inscripciones {{ request()->routeIs('inscripciones.*') ? 'active' : '' }}"
-                   href="{{ route('inscripciones.create') }}">
+                href="{{ route('inscripciones.index') }}">  <!-- ✅ CORREGIDO -->
                     <i class="bi bi-clipboard-check me-2"></i>Inscripciones
                 </a>
             </div>
