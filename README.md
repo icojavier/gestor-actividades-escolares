@@ -170,10 +170,10 @@ GET    /export/alumnos                  → Exportar todos los alumnos (PDF)
 GET    /export/alumno/{id}/actividades  → Exportar actividades por alumno (PDF)
 API Endpoints
 text
-GET /api-web/actividades    → Lista de actividades (JSON)
-GET /api-web/alumnos        → Lista de alumnos (JSON)  
-GET /api-web/estadisticas   → Estadísticas del sistema (JSON)
-GET /api-web/status         → Status de la aplicación (JSON)
+GET /api/actividades    → Lista de actividades (JSON)
+GET /api/alumnos        → Lista de alumnos (JSON)  
+GET /api/estadisticas   → Estadísticas del sistema (JSON)
+GET /api/status         → Status de la aplicación (JSON)
 🔍 Funcionalidades de Búsqueda
 Búsqueda en actividades: Por nombre de actividad
 
@@ -291,7 +291,7 @@ bash
 php artisan serve
 
 # Probar directamente en navegador
-http://localhost:8000/api-web/actividades
+http://localhost:8000/api/actividades
 📝 Estructura de Archivos Importantes
 text
 app/
