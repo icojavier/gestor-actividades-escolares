@@ -18,18 +18,19 @@ class ActividadController extends Controller
         try {
             $actividades = Actividad::all();
             
+            // Forzar JSON explícitamente
             return response()->json([
                 'success' => true,
                 'data' => $actividades,
                 'message' => 'Lista de actividades obtenida correctamente',
                 'count' => $actividades->count()
-            ], 200);
+            ], 200, [], JSON_PRETTY_PRINT);
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Error al obtener las actividades: ' . $e->getMessage()
-            ], 500);
+            ], 500, [], JSON_PRETTY_PRINT);
         }
     }
 
@@ -48,20 +49,20 @@ class ActividadController extends Controller
                 return response()->json([
                     'success' => false,
                     'message' => 'Actividad no encontrada'
-                ], 404);
+                ], 404, [], JSON_PRETTY_PRINT);
             }
 
             return response()->json([
                 'success' => true,
                 'data' => $actividad,
                 'message' => 'Actividad obtenida correctamente'
-            ], 200);
+            ], 200, [], JSON_PRETTY_PRINT);
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Error al obtener la actividad: ' . $e->getMessage()
-            ], 500);
+            ], 500, [], JSON_PRETTY_PRINT);
         }
     }
 
@@ -88,19 +89,19 @@ class ActividadController extends Controller
                 'success' => true,
                 'data' => $actividad,
                 'message' => 'Actividad creada correctamente'
-            ], 201);
+            ], 201, [], JSON_PRETTY_PRINT);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Error de validación',
                 'errors' => $e->errors()
-            ], 422);
+            ], 422, [], JSON_PRETTY_PRINT);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Error al crear la actividad: ' . $e->getMessage()
-            ], 500);
+            ], 500, [], JSON_PRETTY_PRINT);
         }
     }
 
@@ -120,7 +121,7 @@ class ActividadController extends Controller
                 return response()->json([
                     'success' => false,
                     'message' => 'Actividad no encontrada'
-                ], 404);
+                ], 404, [], JSON_PRETTY_PRINT);
             }
 
             $validated = $request->validate([
@@ -137,19 +138,19 @@ class ActividadController extends Controller
                 'success' => true,
                 'data' => $actividad,
                 'message' => 'Actividad actualizada correctamente'
-            ], 200);
+            ], 200, [], JSON_PRETTY_PRINT);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Error de validación',
                 'errors' => $e->errors()
-            ], 422);
+            ], 422, [], JSON_PRETTY_PRINT);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Error al actualizar la actividad: ' . $e->getMessage()
-            ], 500);
+            ], 500, [], JSON_PRETTY_PRINT);
         }
     }
 
@@ -168,7 +169,7 @@ class ActividadController extends Controller
                 return response()->json([
                     'success' => false,
                     'message' => 'Actividad no encontrada'
-                ], 404);
+                ], 404, [], JSON_PRETTY_PRINT);
             }
 
             $actividad->delete();
@@ -176,13 +177,13 @@ class ActividadController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Actividad eliminada correctamente'
-            ], 200);
+            ], 200, [], JSON_PRETTY_PRINT);
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Error al eliminar la actividad: ' . $e->getMessage()
-            ], 500);
+            ], 500, [], JSON_PRETTY_PRINT);
         }
     }
 }
