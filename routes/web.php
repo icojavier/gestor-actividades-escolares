@@ -41,11 +41,11 @@ Route::get('/export/actividad/{id}/alumnos', [PdfExportController::class, 'expor
 Route::get('/export/alumnos', [PdfExportController::class, 'exportAllAlumnos'])->name('export.alumnos.all');
 Route::get('/export/alumno/{id}/actividades', [PdfExportController::class, 'exportAlumnoActividades'])->name('export.alumno.actividades');
 
-// Rutas API Web (para consumo desde frontend u otras aplicaciones)
-Route::get('/api-web/actividades', [ActividadController::class, 'apiIndex'])->name('api.web.actividades');
-Route::get('/api-web/alumnos', [AlumnoController::class, 'apiIndex'])->name('api.web.alumnos');
-Route::get('/api-web/estadisticas', [DashboardController::class, 'apiEstadisticas'])->name('api.web.estadisticas');
-Route::get('/api-web/status', [DashboardController::class, 'apiStatus'])->name('api.web.status');
+// Rutas API (para consumo desde frontend u otras aplicaciones)
+Route::get('/api/actividades', [ActividadController::class, 'apiIndex'])->name('api.actividades');
+Route::get('/api/alumnos', [AlumnoController::class, 'apiIndex'])->name('api.alumnos');
+Route::get('/api/estadisticas', [DashboardController::class, 'apiEstadisticas'])->name('api.estadisticas');
+Route::get('/api/status', [DashboardController::class, 'apiStatus'])->name('api.status');
 
 // Ruta principal redirige al dashboard
 Route::get('/', function () {

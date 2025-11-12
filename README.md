@@ -141,6 +141,31 @@ public function actividad() {
     return $this->belongsTo(Actividad::class);
 }
 
+<<<<<<< HEAD
+=======
+GET    /alumnos                → Listado de alumnos
+POST   /alumnos                → Crear alumno
+GET    /alumnos/create         → Formulario crear alumno
+GET    /alumnos/{id}           → Ver alumno específico
+PUT    /alumnos/{id}           → Actualizar alumno
+DELETE /alumnos/{id}           → Eliminar alumno
+GET    /alumnos/{id}/edit      → Formulario editar alumno
+
+POST   /inscripciones          → Crear inscripción
+GET    /inscripciones/create   → Formulario inscripción
+DELETE /inscripciones/{id}     → Eliminar inscripción
+
+GET    /export/actividades              → Exportar todas las actividades (PDF)
+GET    /export/actividad/{id}/alumnos   → Exportar alumnos por actividad (PDF)
+GET    /export/alumnos                  → Exportar todos los alumnos (PDF)
+GET    /export/alumno/{id}/actividades  → Exportar actividades por alumno (PDF)
+API Endpoints
+text
+GET /api/actividades    → Lista de actividades (JSON)
+GET /api/alumnos        → Lista de alumnos (JSON)  
+GET /api/estadisticas   → Estadísticas del sistema (JSON)
+GET /api/status         → Status de la aplicación (JSON)
+>>>>>>> 015f1f5684c66f9ca8ce9f4cfb7670020cca4934
 🔍 Funcionalidades de Búsqueda
 Búsqueda en actividades: Por nombre de actividad
 
