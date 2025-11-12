@@ -49,11 +49,13 @@
                     </div>
                 </div>
                 
+            <div class="row">
                 <div class="col-md-4">
                     <div class="mb-3">
                         <label for="hora_inicio" class="form-label">Hora de Inicio *</label>
                         <input type="time" class="form-control @error('hora_inicio') is-invalid @enderror" 
-                               id="hora_inicio" name="hora_inicio" value="{{ old('hora_inicio', $actividad->hora_inicio->format('H:i')) }}" required>
+                            id="hora_inicio" name="hora_inicio" 
+                            value="{{ old('hora_inicio', $actividad->hora_inicio_formateada) }}" required>
                         @error('hora_inicio')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -64,7 +66,8 @@
                     <div class="mb-3">
                         <label for="hora_finalizacion" class="form-label">Hora de Finalización *</label>
                         <input type="time" class="form-control @error('hora_finalizacion') is-invalid @enderror" 
-                               id="hora_finalizacion" name="hora_finalizacion" value="{{ old('hora_finalizacion', $actividad->hora_finalizacion->format('H:i')) }}" required>
+                            id="hora_finalizacion" name="hora_finalizacion" 
+                            value="{{ old('hora_finalizacion', $actividad->hora_finalizacion_formateada) }}" required>
                         @error('hora_finalizacion')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror

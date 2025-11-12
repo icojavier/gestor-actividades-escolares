@@ -54,12 +54,11 @@ class InscripcionController extends Controller
                 ->with('error', 'El alumno ya está inscrito en esta actividad.');
         }
 
-        // Crear la inscripción con estado por defecto
+        // Crear la inscripción
         Inscripcion::create([
             'alumno_id' => $request->alumno_id,
             'actividad_id' => $request->actividad_id,
             'fecha_inscripcion' => now(),
-            'estado' => 'Aceptada'
         ]);
 
         // ✅ Asegúrate de que redirija al listado

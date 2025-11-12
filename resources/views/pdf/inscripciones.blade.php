@@ -68,16 +68,14 @@
                 <th>Alumno</th>
                 <th>Actividad</th>
                 <th>Fecha de Inscripción</th>
-                <th>Estado</th>
             </tr>
         </thead>
         <tbody>
             @foreach($inscripciones as $inscripcion)
             <tr>
-                <td>{{ $inscripcion->alumno->nombre }} {{ $inscripcion->alumno->apellido }}</td>
+                <td>{{ $inscripcion->alumno->nombre_completo ?? ($inscripcion->alumno->nombre . ' ' . $inscripcion->alumno->apellido) }}</td>
                 <td>{{ $inscripcion->actividad->nombre }}</td>
                 <td>{{ \Carbon\Carbon::parse($inscripcion->fecha_inscripcion)->format('d/m/Y') }}</td>
-                <td>{{ $inscripcion->estado }}</td>
             </tr>
             @endforeach
         </tbody>

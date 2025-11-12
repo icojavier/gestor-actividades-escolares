@@ -90,7 +90,7 @@ dia_semana - Día de la semana
 
 hora_inicio - Formato HH:MM
 
-hora_fin - Formato HH:MM (validación > hora_inicio)
+hora_finalizacion - Formato HH:MM (validación > hora_inicio)
 
 created_at, updated_at - Timestamps
 
@@ -140,40 +140,7 @@ public function alumno() {
 public function actividad() {
     return $this->belongsTo(Actividad::class);
 }
-🎯 Rutas Disponibles
-Rutas Web
-text
-GET    /                       → Dashboard principal
-GET    /actividades            → Listado de actividades
-POST   /actividades            → Crear actividad
-GET    /actividades/create     → Formulario crear actividad
-GET    /actividades/{id}       → Ver actividad específica
-PUT    /actividades/{id}       → Actualizar actividad
-DELETE /actividades/{id}       → Eliminar actividad
-GET    /actividades/{id}/edit  → Formulario editar actividad
 
-GET    /alumnos                → Listado de alumnos
-POST   /alumnos                → Crear alumno
-GET    /alumnos/create         → Formulario crear alumno
-GET    /alumnos/{id}           → Ver alumno específico
-PUT    /alumnos/{id}           → Actualizar alumno
-DELETE /alumnos/{id}           → Eliminar alumno
-GET    /alumnos/{id}/edit      → Formulario editar alumno
-
-POST   /inscripciones          → Crear inscripción
-GET    /inscripciones/create   → Formulario inscripción
-DELETE /inscripciones/{id}     → Eliminar inscripción
-
-GET    /export/actividades              → Exportar todas las actividades (PDF)
-GET    /export/actividad/{id}/alumnos   → Exportar alumnos por actividad (PDF)
-GET    /export/alumnos                  → Exportar todos los alumnos (PDF)
-GET    /export/alumno/{id}/actividades  → Exportar actividades por alumno (PDF)
-API Endpoints
-text
-GET /api-web/actividades    → Lista de actividades (JSON)
-GET /api-web/alumnos        → Lista de alumnos (JSON)  
-GET /api-web/estadisticas   → Estadísticas del sistema (JSON)
-GET /api-web/status         → Status de la aplicación (JSON)
 🔍 Funcionalidades de Búsqueda
 Búsqueda en actividades: Por nombre de actividad
 
@@ -291,7 +258,7 @@ bash
 php artisan serve
 
 # Probar directamente en navegador
-http://localhost:8000/api-web/actividades
+http://localhost:8000/api/actividades
 📝 Estructura de Archivos Importantes
 text
 app/

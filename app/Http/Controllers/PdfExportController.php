@@ -34,7 +34,6 @@ class PdfExportController extends Controller
         return $pdf->download('lista-alumnos-completa.pdf');
     }
 
-    // ⚠️ MÉTODO FALTANTE - Agregar este método
     public function exportAlumnoActividades($id)
     {
         try {

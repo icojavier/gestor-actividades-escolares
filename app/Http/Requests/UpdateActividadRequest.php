@@ -3,14 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Carbon\Carbon;
 
 class UpdateActividadRequest extends FormRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
-
     public function rules()
     {
         return [
@@ -21,32 +17,33 @@ class UpdateActividadRequest extends FormRequest
             'hora_finalizacion' => [
                 'required',
                 'date_format:H:i',
-                'after:hora_inicio',
                 function ($attribute, $value, $fail) {
-                    $horaInicio = \Carbon\Carbon::createFromFormat('H:i', $this->hora_inicio);
-                    $horaFin = \Carbon\Carbon::createFromFormat('H:i', $value);
+                    $horaInicio = $this->input('hora_inicio');
+                    $horaFin = $value;
+                    
+                                  
+                    $inicio = Carbon::createFromFormat('H:i', $horaInicio);
+                    $fin = Carbon::createFromFormat('H:i', $horaFin);
+                    
+                    // Validar que la hora fin sea posterior
+                    if ($fin->lt($inicio)) {
+                        $fail('La hora de finalización debe ser posterior a la hora de inicio.');
+                    }
+                    
+                    // Manejar actividades que cruzan la medianoche
+                    if ($fin->lt($inicio)) {
+                        $fin->addDay();
+                    }
 
-                    $diferenciaMinutos = $horaInicio->diffInMinutes($horaFin);
-
+                    // Calcular diferencia en minutos
+                    $diferenciaMinutos = $inicio->diffInMinutes($fin);
+                    
+                    // Validar duración mínima de 45 minutos
                     if ($diferenciaMinutos < 45) {
-                        $fail('La hora de finalización debe ser al menos 45 minutos después de la hora de inicio.');
+                        $fail('La actividad debe durar al menos 45 minutos.');
                     }
                 },
             ],
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'nombre.required' => 'El nombre de la actividad es obligatorio.',
-            'descripcion.required' => 'La descripción es obligatoria.',
-            'dia_semana.required' => 'El día de la semana es obligatorio.',
-            'hora_inicio.required' => 'La hora de inicio es obligatoria.',
-            'hora_inicio.date_format' => 'El formato de la hora de inicio debe ser HH:MM.',
-            'hora_finalizacion.required' => 'La hora de finalización es obligatoria.',
-            'hora_finalizacion.date_format' => 'El formato de la hora de finalización debe ser HH:MM.',
-            'hora_finalizacion.after' => 'La hora de finalización debe ser posterior a la hora de inicio.',
         ];
     }
 }

@@ -55,8 +55,8 @@
                         <span class="badge bg-info">{{ $actividad->dia_semana }}</span>
                     </td>
                     <td class="text-center">
-                        @if($actividad->hora_inicio && $actividad->hora_fin)
-                            {{ \Carbon\Carbon::parse($actividad->hora_inicio)->format('H:i') }} - {{ \Carbon\Carbon::parse($actividad->hora_fin)->format('H:i') }}
+                        @if($actividad->hora_inicio && $actividad->hora_finalizacion)
+                            {{ \Carbon\Carbon::parse($actividad->hora_inicio)->format('H:i') }} - {{ \Carbon\Carbon::parse($actividad->hora_finalizacion)->format('H:i') }}
                         @else
                             <span class="text-muted">Horario no definido</span>
                         @endif

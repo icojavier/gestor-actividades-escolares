@@ -1,134 +1,121 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Detalles de la Inscripción</h1>
-    <div class="btn-toolbar mb-2 mb-md-0">
-        <a href="{{ route('inscripciones.index') }}" class="btn btn-secondary me-2">
-            ← Volver a la lista
-        </a>
-        <form action="{{ route('inscripciones.destroy', $inscripcion->id) }}" method="POST" class="d-inline">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger"
-                onclick="return confirm('¿Estás seguro de eliminar esta inscripción?')">
-                <i class="bi bi-trash"></i> Eliminar
-            </button>
-        </form>
-    </div>
-</div>
+<div class="container py-3">
 
-<div class="row">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title">Información de la Inscripción</h5>
-            </div>
-            <div class="card-body">
-                <table class="table table-bordered">
-                    <tr>
-                        <th>ID:</th>
-                        <td>{{ $inscripcion->id }}</td>
-                    </tr>
-                    <tr>
-                        <th>Fecha de Inscripción:</th>
-                        <td>{{ \Carbon\Carbon::parse($inscripcion->fecha_inscripcion)->format('d/m/Y') }}</td>
-                    </tr>
-                    <tr>
-                        <th>Estado:</th>
-                        <td>
-                            @if($inscripcion->estado == 'Aceptada')
-                                <span class="badge bg-success">{{ $inscripcion->estado }}</span>
-                            @elseif($inscripcion->estado == 'Pendiente')
-                                <span class="badge bg-warning text-dark">{{ $inscripcion->estado }}</span>
-                            @elseif($inscripcion->estado == 'Cancelada')
-                                <span class="badge bg-danger">{{ $inscripcion->estado }}</span>
-                            @else
-                                <span class="badge bg-secondary">{{ $inscripcion->estado }}</span>
-                            @endif
-                        </td>
-                    </tr>
-                </table>
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+        <h1 class="h3 mb-0">
+            <text-primary me-2"></i> Detalles de la Inscripción
+        </h1>
+        <div>
+            <a href="{{ route('inscripciones.index') }}" class="btn btn-outline-secondary me-2">
+                <i class="bi bi-arrow-left"></i> Volver a la lista
+            </a>
+            <form action="{{ route('inscripciones.destroy', $inscripcion->id) }}" method="POST" class="d-inline">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger"
+                    onclick="return confirm('¿Estás seguro de eliminar esta inscripción?')">
+                    <i class="bi bi-trash"></i> Eliminar
+                </button>
+            </form>
+        </div>
+    </div>
+
+    {{-- Información de la Inscripción --}}
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-primary bg-gradient text-white fw-semibold">
+            <i class="bi bi-card-list me-1"></i> Información de la Inscripción
+        </div>
+        <div class="card-body bg-light">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <p class="mb-1 fw-bold text-muted">ID:</p>
+                    <p class="mb-0">{{ $inscripcion->id }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p class="mb-1 fw-bold text-muted">Fecha de Inscripción:</p>
+                    <p class="mb-0">{{ \Carbon\Carbon::parse($inscripcion->fecha_inscripcion)->format('d/m/Y') }}</p>
+                </div>                
             </div>
         </div>
     </div>
 
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title">Información del Alumno</h5>
-            </div>
-            <div class="card-body">
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Nombre:</th>
-                        <td>{{ $inscripcion->alumno->nombre }} {{ $inscripcion->alumno->apellido }}</td>
-                    </tr>
-                    <tr>
-                        <th>Curso:</th>
-                        <td>{{ $inscripcion->alumno->curso }}</td>
-                    </tr>
-                    <tr>
-                        <th>Email:</th>
-                        <td>{{ $inscripcion->alumno->email ?? 'No especificado' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Teléfono:</th>
-                        <td>{{ $inscripcion->alumno->telefono ?? 'No especificado' }}</td>
-                    </tr>
-                </table>
+    {{-- Información del Alumno --}}
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-success bg-gradient text-white fw-semibold">
+            <i class="bi bi-person-fill me-1"></i> Información del Alumno
+        </div>
+        <div class="card-body bg-light">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <p class="mb-1 fw-bold text-muted">Nombre:</p>
+                    <p class="mb-0">{{ $inscripcion->alumno->nombre_completo }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p class="mb-1 fw-bold text-muted">Curso Académico:</p>
+                    <p class="mb-0">{{ $inscripcion->alumno->curso_academico ?? 'No especificado' }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p class="mb-1 fw-bold text-muted">Edad:</p>
+                    <p class="mb-0">{{ $inscripcion->alumno->edad ? $inscripcion->alumno->edad . ' años' : 'No disponible' }}</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="row mt-4">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title">Información de la Actividad</h5>
-            </div>
-            <div class="card-body">
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Nombre:</th>
-                        <td>{{ $inscripcion->actividad->nombre }}</td>
-                    </tr>
-                    <tr>
-                        <th>Descripción:</th>
-                        <td>{{ $inscripcion->actividad->descripcion }}</td>
-                    </tr>
-                    <tr>
-                        <th>Día de la semana:</th>
-                        <td><span class="badge bg-info">{{ $inscripcion->actividad->dia_semana }}</span></td>
-                    </tr>
-                    <tr>
-                        <th>Horario:</th>
-                        <td>
-                            @if($inscripcion->actividad->hora_inicio && $inscripcion->actividad->hora_finalizacion)
-                                {{ \Carbon\Carbon::parse($inscripcion->actividad->hora_inicio)->format('H:i') }} -
-                                {{ \Carbon\Carbon::parse($inscripcion->actividad->hora_finalizacion)->format('H:i') }}
-                            @else
-                                Horario no definido
-                            @endif
-                        </td>
-                    </tr>
-                </table>
+    {{-- Información de la Actividad --}}
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-info bg-gradient text-white fw-semibold">
+            <i class="bi bi-calendar-event me-1"></i> Información de la Actividad
+        </div>
+        <div class="card-body bg-light">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <p class="mb-1 fw-bold text-muted">Nombre:</p>
+                    <p class="mb-0">{{ $inscripcion->actividad->nombre }}</p>
+                </div>
+                <div class="col-md-5">
+                    <p class="mb-1 fw-bold text-muted">Descripción:</p>
+                    <p class="mb-0 text-muted">{{ $inscripcion->actividad->descripcion ?? 'Sin descripción' }}</p>
+                </div>
+                <div class="col-md-2">
+                    <p class="mb-1 fw-bold text-muted">Día de la Semana:</p>
+                    <span class="badge bg-info text-dark">{{ $inscripcion->actividad->dia_semana }}</span>
+                </div>
+                <div class="col-md-2">
+                    <p class="mb-1 fw-bold text-muted">Horario:</p>
+                    <p class="mb-0">
+                        {{ $inscripcion->actividad->hora_inicio->format('H:i') }} - 
+                        {{ $inscripcion->actividad->hora_finalizacion->format('H:i') }}
+                    </p>
+                </div>
             </div>
         </div>
     </div>
+
 </div>
 @endsection
 
 @push('styles')
 <style>
-    .card-header {
-        background-color: #f8f9fa;
-        border-bottom: 1px solid #dee2e6;
+    .card {
+        border-radius: 12px;
     }
-    .table th {
-        width: 30%;
-        background-color: #f8f9fa;
+    .card-header {
+        border-top-left-radius: 12px !important;
+        border-top-right-radius: 12px !important;
+    }
+    .card-body {
+        border-bottom-left-radius: 12px !important;
+        border-bottom-right-radius: 12px !important;
+    }
+    .fw-bold.text-muted {
+        font-size: 0.9rem;
+    }
+    .badge {
+        font-size: 0.85rem;
+        padding: 0.4em 0.6em;
     }
 </style>
 @endpush

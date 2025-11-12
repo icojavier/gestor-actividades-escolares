@@ -4,13 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Actividad extends Model
 {
     use HasFactory;
 
-    // ESPECIFICAR EXPLÍCITAMENTE EL NOMBRE DE LA TABLA
     protected $table = 'actividades';
 
     protected $fillable = [
@@ -23,8 +21,19 @@ class Actividad extends Model
 
     protected $casts = [
         'hora_inicio' => 'datetime',
-        'hora_fin' => 'datetime',
+        'hora_finalizacion' => 'datetime',
     ];
+
+    // Accessors para formatear horas
+    public function getHoraInicioFormateadaAttribute()
+    {
+        return $this->hora_inicio ? $this->hora_inicio->format('H:i') : null;
+    }
+
+    public function getHoraFinalizacionFormateadaAttribute()
+    {
+        return $this->hora_finalizacion ? $this->hora_finalizacion->format('H:i') : null;
+    }
 
     // Relación con inscripciones
     public function inscripciones()
@@ -32,14 +41,9 @@ class Actividad extends Model
         return $this->hasMany(Inscripcion::class);
     }
 
+    // Relación con alumnos
     public function alumnos()
-{
-    return $this->belongsToMany(Alumno::class, 'inscripciones');
-}
-
-    // Para withCount
-    public function alumnos_count()
     {
-        return $this->belongsToMany(Alumno::class, 'inscripciones')->count();
+        return $this->belongsToMany(Alumno::class, 'inscripciones');
     }
 }
